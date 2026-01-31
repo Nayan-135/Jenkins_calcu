@@ -2,7 +2,7 @@ pipeline {
     agent any
 
     environment {
-        // Name must match Jenkins → Manage Jenkins → Configure System → SonarQube
+        // Must match Manage Jenkins → System → SonarQube servers
         SONARQUBE_SERVER = 'SonarQube-Server'
     }
 
@@ -21,7 +21,7 @@ pipeline {
                 . venv/bin/activate
                 pip install --upgrade pip
                 pip install -r requirements.txt
-                pip install pytest pytest-cov sonar-scanner
+                pip install pytest pytest-cov
                 '''
             }
         }
@@ -39,7 +39,6 @@ pipeline {
             steps {
                 withSonarQubeEnv("${SONARQUBE_SERVER}") {
                     sh '''
-                    . venv/bin/activate
                     sonar-scanner \
                       -Dsonar.projectKey=jenkins_calculator \
                       -Dsonar.projectName=Jenkins_Calculator \
